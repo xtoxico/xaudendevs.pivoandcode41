@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Glosario — Prompting Riguroso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Lato:wght@300;400;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --panel: #111827;
+      --panel-2: #030712;
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --muted-2: #64748b;
+      --border: #1f2937;
+      --accent-1: #f43f5e;
+      --accent-2: #a855f7;
+      --accent-3: #0ea5e9;
+      --accent-4: #10b981;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(244, 63, 94, 0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(14, 165, 233, 0.15), transparent 28%),
+        linear-gradient(180deg, var(--bg), #030712 45%, #020617);
+      color: var(--text);
+      font-family: "Lato", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100vh;
+    }
+
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 90%);
+    }
+
+    header {
+      position: relative;
+      padding: 72px 24px 36px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .eyebrow {
+      font-family: "Fira Code", monospace;
+      color: var(--accent-3);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-family: "Poppins", sans-serif;
+      font-size: clamp(42px, 8vw, 86px);
+      line-height: 0.95;
+      margin: 0;
+      letter-spacing: -0.05em;
+      font-weight: 800;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2), var(--accent-3));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      max-width: 860px;
+      margin: 22px auto 0;
+      color: #cbd5e1;
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 300;
+      line-height: 1.45;
+    }
+
+    .toolbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(18px);
+      background: rgba(3, 7, 18, 0.78);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 16px 24px;
+    }
+
+    .toolbar-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .search {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 14px 18px;
+      font-size: 15px;
+      outline: none;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+
+    .search:focus {
+      border-color: var(--accent-3);
+      box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.12);
+    }
+
+    .counter {
+      font-family: "Fira Code", monospace;
+      color: var(--muted);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    main {
+      position: relative;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 34px 24px 80px;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .intro-card {
+      background: linear-gradient(180deg, rgba(17, 24, 39, 0.86), rgba(3, 7, 18, 0.86));
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.28);
+    }
+
+    .intro-card h2 {
+      font-family: "Poppins", sans-serif;
+      font-size: 22px;
+      margin: 0 0 10px;
+    }
+
+    .intro-card p {
+      color: #cbd5e1;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .quote {
+      border-left: 4px solid var(--accent-2);
+      color: #e5e7eb;
+      font-size: 18px;
+      font-style: italic;
+      line-height: 1.55;
+    }
+
+    .terms-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .term-card {
+      background: rgba(15, 23, 42, 0.76);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 20px;
+      padding: 20px;
+      min-height: 178px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.18);
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .term-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(14, 165, 233, 0.45);
+      background: rgba(15, 23, 42, 0.96);
+    }
+
+    .term-title {
+      font-family: "Poppins", sans-serif;
+      font-size: 18px;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .term-card p {
+      margin: 0;
+      color: #cbd5e1;
+      line-height: 1.55;
+      font-size: 14px;
+    }
+
+    .term-card:nth-child(4n+1) .term-title { color: var(--accent-1); }
+    .term-card:nth-child(4n+2) .term-title { color: var(--accent-2); }
+    .term-card:nth-child(4n+3) .term-title { color: var(--accent-3); }
+    .term-card:nth-child(4n+4) .term-title { color: var(--accent-4); }
+
+    .empty {
+      display: none;
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--muted);
+      border: 1px dashed var(--border);
+      border-radius: 20px;
+      margin-top: 18px;
+    }
+
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      color: var(--muted-2);
+      text-align: center;
+      padding: 28px 20px;
+      font-family: "Fira Code", monospace;
+      font-size: 12px;
+    }
+
+    @media (max-width: 980px) {
+      .terms-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .intro {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header {
+        padding-top: 46px;
+      }
+
+      .toolbar-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .counter {
+        text-align: center;
+      }
+
+      .terms-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .term-card {
+        min-height: auto;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: #111827;
+      }
+
+      .grid-bg, .toolbar {
+        display: none;
+      }
+
+      header {
+        padding: 24px 0;
+      }
+
+      .gradient-text {
+        color: #111827;
+        background: none;
+      }
+
+      .subtitle, .intro-card p, .term-card p {
+        color: #374151;
+      }
+
+      main {
+        padding: 0;
+        max-width: none;
+      }
+
+      .intro {
+        display: block;
+      }
+
+      .intro-card, .term-card {
+        box-shadow: none;
+        border: 1px solid #d1d5db;
+        background: white;
+        break-inside: avoid;
+      }
+
+      .terms-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      footer {
+        color: #6b7280;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-bg"></div>
+
+  <header>
+    <div class="eyebrow">PIVO&CODE 41 · Glosario técnico</div>
+    <h1>Prompting <span class="gradient-text">Riguroso</span></h1>
+    <p class="subtitle">
+      Glosario de términos para la charla: anglicismos, conceptos de IA, arquitectura,
+      TypeScript, testing y desarrollo guiado por especificaciones.
+    </p>
+  </header>
+
+  <section class="toolbar">
+    <div class="toolbar-inner">
+      <input id="search" class="search" type="search" placeholder="Buscar término, por ejemplo: CoT, Facade, TDD, Spec..." autocomplete="off" />
+      <div id="counter" class="counter">66 términos</div>
+    </div>
+  </section>
+
+  <main>
+    <section class="intro">
+      <div class="intro-card">
+        <h2>Idea central</h2>
+        <p>
+          La IA no debe decidir la arquitectura por nosotros. La IA debe obedecer Specs,
+          contratos, capas y tests. El prompt lanza la tarea; la Spec define la verdad.
+        </p>
+      </div>
+      <div class="intro-card quote">
+        “CoT no es pedirle a la IA que piense bonito; es obligarla a dejar por escrito
+        el razonamiento arquitectónico antes de tocar una línea de código.”
+      </div>
+    </section>
+
+    <section id="terms" class="terms-grid">
+      <article class="term-card" data-term="vibecoding" data-definition="forma de programar “por sensaciones”, aceptando código generado por ia porque parece correcto, compila o funciona en el caso feliz, sin entender bien sus implicaciones técnicas.">
+        <div class="term-title">VibeCoding</div>
+        <p>Forma de programar “por sensaciones”, aceptando código generado por IA porque parece correcto, compila o funciona en el caso feliz, sin entender bien sus implicaciones técnicas.</p>
+    </article>
+<article class="term-card" data-term="ia generativa" data-definition="tipo de inteligencia artificial capaz de generar texto, código, imágenes u otros contenidos a partir de instrucciones en lenguaje natural.">
+        <div class="term-title">IA generativa</div>
+        <p>Tipo de inteligencia artificial capaz de generar texto, código, imágenes u otros contenidos a partir de instrucciones en lenguaje natural.</p>
+    </article>
+<article class="term-card" data-term="llm" data-definition="siglas de large language model. modelo de lenguaje grande entrenado para comprender y generar texto. chatgpt, gemini, claude o copilot se basan en este tipo de tecnología.">
+        <div class="term-title">LLM</div>
+        <p>Siglas de Large Language Model. Modelo de lenguaje grande entrenado para comprender y generar texto. ChatGPT, Gemini, Claude o Copilot se basan en este tipo de tecnología.</p>
+    </article>
+<article class="term-card" data-term="prompt" data-definition="instrucción que se le da a una ia para que realice una tarea. en la charla, el prompt no debe ser la fuente de verdad, sino una orden de ejecución.">
+        <div class="term-title">Prompt</div>
+        <p>Instrucción que se le da a una IA para que realice una tarea. En la charla, el prompt no debe ser la fuente de verdad, sino una orden de ejecución.</p>
+    </article>
+<article class="term-card" data-term="system prompt" data-definition="instrucción de alto nivel que define cómo debe comportarse la ia. por ejemplo: no generar código sin leer antes la spec o no mezclar lógica de negocio con infraestructura.">
+        <div class="term-title">System Prompt</div>
+        <p>Instrucción de alto nivel que define cómo debe comportarse la IA. Por ejemplo: no generar código sin leer antes la Spec o no mezclar lógica de negocio con infraestructura.</p>
+    </article>
+<article class="term-card" data-term="prompting riguroso" data-definition="técnica de uso de ia donde no se pide código de forma improvisada, sino que se obliga al modelo a seguir reglas, specs, contratos, capas y tests.">
+        <div class="term-title">Prompting Riguroso</div>
+        <p>Técnica de uso de IA donde no se pide código de forma improvisada, sino que se obliga al modelo a seguir reglas, Specs, contratos, capas y tests.</p>
+    </article>
+<article class="term-card" data-term="spec / design spec" data-definition="documento de especificación de diseño. describe qué debe hacer un módulo, qué reglas debe cumplir, qué arquitectura debe respetar y qué restricciones tiene.">
+        <div class="term-title">Spec / Design Spec</div>
+        <p>Documento de especificación de diseño. Describe qué debe hacer un módulo, qué reglas debe cumplir, qué arquitectura debe respetar y qué restricciones tiene.</p>
+    </article>
+<article class="term-card" data-term="spec driven development" data-definition="desarrollo guiado por especificaciones. primero se define la spec; después la ia genera contratos, tests y código alineado con esa spec.">
+        <div class="term-title">Spec Driven Development</div>
+        <p>Desarrollo guiado por especificaciones. Primero se define la Spec; después la IA genera contratos, tests y código alineado con esa Spec.</p>
+    </article>
+<article class="term-card" data-term="documentación viva" data-definition="documentación que vive junto al código y se usa activamente para desarrollar. si cambia el negocio, se actualiza la spec y la ia debe obedecerla.">
+        <div class="term-title">Documentación viva</div>
+        <p>Documentación que vive junto al código y se usa activamente para desarrollar. Si cambia el negocio, se actualiza la Spec y la IA debe obedecerla.</p>
+    </article>
+<article class="term-card" data-term="contrato" data-definition="definición formal de cómo se comunican dos partes del sistema. puede ser una interfaz typescript, un esquema json, un endpoint openapi o un dto.">
+        <div class="term-title">Contrato</div>
+        <p>Definición formal de cómo se comunican dos partes del sistema. Puede ser una interfaz TypeScript, un esquema JSON, un endpoint OpenAPI o un DTO.</p>
+    </article>
+<article class="term-card" data-term="dto" data-definition="siglas de data transfer object. objeto usado para transportar datos entre capas o entre cliente y servidor. por ejemplo, registeruserrequestdto.">
+        <div class="term-title">DTO</div>
+        <p>Siglas de Data Transfer Object. Objeto usado para transportar datos entre capas o entre cliente y servidor. Por ejemplo, RegisterUserRequestDto.</p>
+    </article>
+<article class="term-card" data-term="interface typescript" data-definition="contrato de typescript que define la forma que debe tener un objeto o clase. ayuda a que la ia no invente estructuras distintas cada vez.">
+        <div class="term-title">Interface TypeScript</div>
+        <p>Contrato de TypeScript que define la forma que debe tener un objeto o clase. Ayuda a que la IA no invente estructuras distintas cada vez.</p>
+    </article>
+<article class="term-card" data-term="openapi / swagger" data-definition="estándar para documentar y definir apis rest: rutas, métodos http, parámetros, cuerpos de petición, respuestas y códigos de estado.">
+        <div class="term-title">OpenAPI / Swagger</div>
+        <p>Estándar para documentar y definir APIs REST: rutas, métodos HTTP, parámetros, cuerpos de petición, respuestas y códigos de estado.</p>
+    </article>
+<article class="term-card" data-term="json schema" data-definition="formato para definir la estructura esperada de un objeto json. sirve para validar datos de entrada y salida.">
+        <div class="term-title">JSON Schema</div>
+        <p>Formato para definir la estructura esperada de un objeto JSON. Sirve para validar datos de entrada y salida.</p>
+    </article>
+<article class="term-card" data-term="zod" data-definition="librería de typescript para validar datos en tiempo de ejecución y generar tipos seguros.">
+        <div class="term-title">Zod</div>
+        <p>Librería de TypeScript para validar datos en tiempo de ejecución y generar tipos seguros.</p>
+    </article>
+<article class="term-card" data-term="typebox" data-definition="librería para definir esquemas de datos compatibles con typescript y json schema.">
+        <div class="term-title">TypeBox</div>
+        <p>Librería para definir esquemas de datos compatibles con TypeScript y JSON Schema.</p>
+    </article>
+<article class="term-card" data-term="context window" data-definition="ventana de contexto de una ia. es la cantidad de información que el modelo puede tener presente en una interacción: prompts, código, documentos, historial, etc.">
+        <div class="term-title">Context Window</div>
+        <p>Ventana de contexto de una IA. Es la cantidad de información que el modelo puede tener presente en una interacción: prompts, código, documentos, historial, etc.</p>
+    </article>
+<article class="term-card" data-term="context window optimization" data-definition="técnica de optimizar qué información se entrega a la ia para que no se distraiga ni mezcle conceptos. no consiste en darle todo el repositorio, sino el contexto justo.">
+        <div class="term-title">Context Window Optimization</div>
+        <p>Técnica de optimizar qué información se entrega a la IA para que no se distraiga ni mezcle conceptos. No consiste en darle todo el repositorio, sino el contexto justo.</p>
+    </article>
+<article class="term-card" data-term="lost in the middle" data-definition="problema por el cual los modelos pueden prestar menos atención a la información situada en medio de contextos muy largos. por eso más contexto no siempre significa mejor comprensión.">
+        <div class="term-title">Lost in the Middle</div>
+        <p>Problema por el cual los modelos pueden prestar menos atención a la información situada en medio de contextos muy largos. Por eso más contexto no siempre significa mejor comprensión.</p>
+    </article>
+<article class="term-card" data-term="atomic specs" data-definition="especificaciones pequeñas, separadas y enfocadas. por ejemplo: una spec para dominio, otra para contratos api y otra para infraestructura.">
+        <div class="term-title">Atomic Specs</div>
+        <p>Especificaciones pequeñas, separadas y enfocadas. Por ejemplo: una Spec para dominio, otra para contratos API y otra para infraestructura.</p>
+    </article>
+<article class="term-card" data-term="inyección selectiva de contexto" data-definition="dar a la ia solo los documentos o archivos que necesita para la tarea actual, evitando ruido innecesario.">
+        <div class="term-title">Inyección selectiva de contexto</div>
+        <p>Dar a la IA solo los documentos o archivos que necesita para la tarea actual, evitando ruido innecesario.</p>
+    </article>
+<article class="term-card" data-term="cot / chain-of-thought" data-definition="técnica que fuerza a la ia a razonar antes de responder. en la charla se aplica a arquitectura: antes de escribir código, debe analizar capas, responsabilidades y trade-offs.">
+        <div class="term-title">CoT / Chain-of-Thought</div>
+        <p>Técnica que fuerza a la IA a razonar antes de responder. En la charla se aplica a arquitectura: antes de escribir código, debe analizar capas, responsabilidades y trade-offs.</p>
+    </article>
+<article class="term-card" data-term="trade-off" data-definition="compromiso entre dos decisiones técnicas. por ejemplo, simplicidad frente a escalabilidad, rapidez frente a mantenibilidad o abstracción frente a claridad.">
+        <div class="term-title">Trade-off</div>
+        <p>Compromiso entre dos decisiones técnicas. Por ejemplo, simplicidad frente a escalabilidad, rapidez frente a mantenibilidad o abstracción frente a claridad.</p>
+    </article>
+<article class="term-card" data-term="arquitectura hexagonal" data-definition="patrón arquitectónico que separa el núcleo de negocio de los detalles externos como base de datos, apis o frameworks. también se conoce como ports and adapters.">
+        <div class="term-title">Arquitectura Hexagonal</div>
+        <p>Patrón arquitectónico que separa el núcleo de negocio de los detalles externos como base de datos, APIs o frameworks. También se conoce como Ports and Adapters.</p>
+    </article>
+<article class="term-card" data-term="clean architecture" data-definition="estilo arquitectónico que separa el software en capas, protegiendo el dominio de negocio de frameworks, bases de datos o interfaces externas.">
+        <div class="term-title">Clean Architecture</div>
+        <p>Estilo arquitectónico que separa el software en capas, protegiendo el dominio de negocio de frameworks, bases de datos o interfaces externas.</p>
+    </article>
+<article class="term-card" data-term="dominio" data-definition="parte del software que representa las reglas esenciales del negocio. debe ser lo más independiente posible de frameworks y tecnología externa.">
+        <div class="term-title">Dominio</div>
+        <p>Parte del software que representa las reglas esenciales del negocio. Debe ser lo más independiente posible de frameworks y tecnología externa.</p>
+    </article>
+<article class="term-card" data-term="infraestructura" data-definition="capa que contiene detalles técnicos: base de datos, servicios externos, frameworks, apis, correo, filesystem, etc.">
+        <div class="term-title">Infraestructura</div>
+        <p>Capa que contiene detalles técnicos: base de datos, servicios externos, frameworks, APIs, correo, filesystem, etc.</p>
+    </article>
+<article class="term-card" data-term="capa de aplicación" data-definition="capa que coordina casos de uso. no es exactamente dominio puro ni infraestructura; orquesta acciones del sistema.">
+        <div class="term-title">Capa de aplicación</div>
+        <p>Capa que coordina casos de uso. No es exactamente dominio puro ni infraestructura; orquesta acciones del sistema.</p>
+    </article>
+<article class="term-card" data-term="caso de uso" data-definition="operación concreta que el sistema debe realizar. por ejemplo: registrar usuario, iniciar sesión, emitir token o validar email.">
+        <div class="term-title">Caso de uso</div>
+        <p>Operación concreta que el sistema debe realizar. Por ejemplo: registrar usuario, iniciar sesión, emitir token o validar email.</p>
+    </article>
+<article class="term-card" data-term="facade / fachada" data-definition="patrón de diseño que ofrece una interfaz simple para acceder a una lógica interna más compleja. en la demo, el controller llama a la facade, y la facade orquesta services y repositories.">
+        <div class="term-title">Facade / Fachada</div>
+        <p>Patrón de diseño que ofrece una interfaz simple para acceder a una lógica interna más compleja. En la demo, el controller llama a la facade, y la facade orquesta services y repositories.</p>
+    </article>
+<article class="term-card" data-term="controller" data-definition="capa que recibe la petición http, extrae datos y llama a la facade. no debe contener reglas de negocio.">
+        <div class="term-title">Controller</div>
+        <p>Capa que recibe la petición HTTP, extrae datos y llama a la facade. No debe contener reglas de negocio.</p>
+    </article>
+<article class="term-card" data-term="route" data-definition="archivo o capa donde se definen las rutas http, por ejemplo post /api/auth/register.">
+        <div class="term-title">Route</div>
+        <p>Archivo o capa donde se definen las rutas HTTP, por ejemplo POST /api/auth/register.</p>
+    </article>
+<article class="term-card" data-term="service" data-definition="capa donde se implementan operaciones internas o lógica reutilizable del módulo.">
+        <div class="term-title">Service</div>
+        <p>Capa donde se implementan operaciones internas o lógica reutilizable del módulo.</p>
+    </article>
+<article class="term-card" data-term="repository" data-definition="capa que abstrae el acceso a datos. permite que el resto de la aplicación no dependa directamente de sql, orm o base de datos concreta.">
+        <div class="term-title">Repository</div>
+        <p>Capa que abstrae el acceso a datos. Permite que el resto de la aplicación no dependa directamente de SQL, ORM o base de datos concreta.</p>
+    </article>
+<article class="term-card" data-term="model" data-definition="representación interna de una entidad o estructura de datos del sistema.">
+        <div class="term-title">Model</div>
+        <p>Representación interna de una entidad o estructura de datos del sistema.</p>
+    </article>
+<article class="term-card" data-term="acoplamiento" data-definition="grado de dependencia entre partes del sistema. mucho acoplamiento dificulta modificar una parte sin romper otra.">
+        <div class="term-title">Acoplamiento</div>
+        <p>Grado de dependencia entre partes del sistema. Mucho acoplamiento dificulta modificar una parte sin romper otra.</p>
+    </article>
+<article class="term-card" data-term="cohesión" data-definition="grado en que una clase, módulo o función tiene una responsabilidad clara y bien enfocada. alta cohesión suele ser buena.">
+        <div class="term-title">Cohesión</div>
+        <p>Grado en que una clase, módulo o función tiene una responsabilidad clara y bien enfocada. Alta cohesión suele ser buena.</p>
+    </article>
+<article class="term-card" data-term="responsabilidad única" data-definition="principio según el cual una clase o función debe tener una sola razón para cambiar. está relacionado con el principio solid conocido como srp.">
+        <div class="term-title">Responsabilidad única</div>
+        <p>Principio según el cual una clase o función debe tener una sola razón para cambiar. Está relacionado con el principio SOLID conocido como SRP.</p>
+    </article>
+<article class="term-card" data-term="código espagueti" data-definition="código desordenado, muy acoplado, difícil de seguir y modificar. en la charla aparece como código espagueti de ia: parece limpio, pero esconde caos arquitectónico.">
+        <div class="term-title">Código espagueti</div>
+        <p>Código desordenado, muy acoplado, difícil de seguir y modificar. En la charla aparece como código espagueti de IA: parece limpio, pero esconde caos arquitectónico.</p>
+    </article>
+<article class="term-card" data-term="deuda técnica" data-definition="coste futuro generado por decisiones rápidas o pobres en el presente. la ia puede acelerar esa deuda si se usa sin control.">
+        <div class="term-title">Deuda técnica</div>
+        <p>Coste futuro generado por decisiones rápidas o pobres en el presente. La IA puede acelerar esa deuda si se usa sin control.</p>
+    </article>
+<article class="term-card" data-term="hiperinflación de código" data-definition="expresión para describir cómo la ia puede generar mucho código muy rápido, aumentando deuda técnica y complejidad a gran velocidad.">
+        <div class="term-title">Hiperinflación de código</div>
+        <p>Expresión para describir cómo la IA puede generar mucho código muy rápido, aumentando deuda técnica y complejidad a gran velocidad.</p>
+    </article>
+<article class="term-card" data-term="happy path" data-definition="camino ideal en el que todo funciona correctamente. el problema es validar solo ese caso y olvidar errores, excepciones y límites.">
+        <div class="term-title">Happy path</div>
+        <p>Camino ideal en el que todo funciona correctamente. El problema es validar solo ese caso y olvidar errores, excepciones y límites.</p>
+    </article>
+<article class="term-card" data-term="tdd" data-definition="siglas de test-driven development. técnica donde primero se escriben tests y luego el código necesario para hacerlos pasar.">
+        <div class="term-title">TDD</div>
+        <p>Siglas de Test-Driven Development. Técnica donde primero se escriben tests y luego el código necesario para hacerlos pasar.</p>
+    </article>
+<article class="term-card" data-term="test en rojo" data-definition="estado inicial del tdd: el test falla porque la funcionalidad todavía no está implementada.">
+        <div class="term-title">Test en rojo</div>
+        <p>Estado inicial del TDD: el test falla porque la funcionalidad todavía no está implementada.</p>
+    </article>
+<article class="term-card" data-term="test en verde" data-definition="estado en el que los tests pasan correctamente. indica que el código cumple los criterios definidos por los tests.">
+        <div class="term-title">Test en verde</div>
+        <p>Estado en el que los tests pasan correctamente. Indica que el código cumple los criterios definidos por los tests.</p>
+    </article>
+<article class="term-card" data-term="suite de tests" data-definition="conjunto de pruebas automáticas que validan el comportamiento del sistema.">
+        <div class="term-title">Suite de tests</div>
+        <p>Conjunto de pruebas automáticas que validan el comportamiento del sistema.</p>
+    </article>
+<article class="term-card" data-term="mock" data-definition="sustituto simulado de una dependencia real. por ejemplo, un repositorio falso para probar una facade sin base de datos.">
+        <div class="term-title">Mock</div>
+        <p>Sustituto simulado de una dependencia real. Por ejemplo, un repositorio falso para probar una facade sin base de datos.</p>
+    </article>
+<article class="term-card" data-term="api rest" data-definition="estilo de api basado en recursos y métodos http como get, post, put o delete.">
+        <div class="term-title">API REST</div>
+        <p>Estilo de API basado en recursos y métodos HTTP como GET, POST, PUT o DELETE.</p>
+    </article>
+<article class="term-card" data-term="endpoint" data-definition="ruta concreta de una api. por ejemplo: post /api/auth/register.">
+        <div class="term-title">Endpoint</div>
+        <p>Ruta concreta de una API. Por ejemplo: POST /api/auth/register.</p>
+    </article>
+<article class="term-card" data-term="http status code" data-definition="código de respuesta http. por ejemplo: 200 ok, 201 created, 400 bad request, 404 not found o 500 internal server error.">
+        <div class="term-title">HTTP Status Code</div>
+        <p>Código de respuesta HTTP. Por ejemplo: 200 OK, 201 Created, 400 Bad Request, 404 Not Found o 500 Internal Server Error.</p>
+    </article>
+<article class="term-card" data-term="boilerplate" data-definition="código repetitivo necesario para arrancar una estructura o proyecto, pero que no aporta lógica de negocio directa.">
+        <div class="term-title">Boilerplate</div>
+        <p>Código repetitivo necesario para arrancar una estructura o proyecto, pero que no aporta lógica de negocio directa.</p>
+    </article>
+<article class="term-card" data-term="runtime" data-definition="momento de ejecución del programa. algo ocurre en runtime cuando pasa mientras la aplicación está funcionando.">
+        <div class="term-title">Runtime</div>
+        <p>Momento de ejecución del programa. Algo ocurre en runtime cuando pasa mientras la aplicación está funcionando.</p>
+    </article>
+<article class="term-card" data-term="compile-time" data-definition="momento de compilación. typescript detecta muchos errores antes de ejecutar el programa.">
+        <div class="term-title">Compile-time</div>
+        <p>Momento de compilación. TypeScript detecta muchos errores antes de ejecutar el programa.</p>
+    </article>
+<article class="term-card" data-term="validación en tiempo de ejecución" data-definition="comprobación de datos mientras el programa corre. por ejemplo, validar que un email tiene formato correcto cuando llega una petición http.">
+        <div class="term-title">Validación en tiempo de ejecución</div>
+        <p>Comprobación de datos mientras el programa corre. Por ejemplo, validar que un email tiene formato correcto cuando llega una petición HTTP.</p>
+    </article>
+<article class="term-card" data-term="tipado estático" data-definition="sistema de tipos que permite detectar errores antes de ejecutar el código. typescript ofrece tipado estático sobre javascript.">
+        <div class="term-title">Tipado estático</div>
+        <p>Sistema de tipos que permite detectar errores antes de ejecutar el código. TypeScript ofrece tipado estático sobre JavaScript.</p>
+    </article>
+<article class="term-card" data-term="orm" data-definition="siglas de object-relational mapping. herramienta que permite trabajar con base de datos usando objetos o modelos en lugar de sql directo. prisma o typeorm son ejemplos.">
+        <div class="term-title">ORM</div>
+        <p>Siglas de Object-Relational Mapping. Herramienta que permite trabajar con base de datos usando objetos o modelos en lugar de SQL directo. Prisma o TypeORM son ejemplos.</p>
+    </article>
+<article class="term-card" data-term="framework" data-definition="conjunto de herramientas y convenciones para desarrollar aplicaciones. express, angular o next.js son frameworks o entornos de trabajo.">
+        <div class="term-title">Framework</div>
+        <p>Conjunto de herramientas y convenciones para desarrollar aplicaciones. Express, Angular o Next.js son frameworks o entornos de trabajo.</p>
+    </article>
+<article class="term-card" data-term="express" data-definition="framework minimalista de node.js para construir apis y aplicaciones web.">
+        <div class="term-title">Express</div>
+        <p>Framework minimalista de Node.js para construir APIs y aplicaciones web.</p>
+    </article>
+<article class="term-card" data-term="typescript" data-definition="lenguaje basado en javascript que añade tipos estáticos. ayuda a crear código más mantenible y seguro.">
+        <div class="term-title">TypeScript</div>
+        <p>Lenguaje basado en JavaScript que añade tipos estáticos. Ayuda a crear código más mantenible y seguro.</p>
+    </article>
+<article class="term-card" data-term="vitest" data-definition="framework de testing moderno para proyectos javascript/typescript.">
+        <div class="term-title">Vitest</div>
+        <p>Framework de testing moderno para proyectos JavaScript/TypeScript.</p>
+    </article>
+<article class="term-card" data-term="supertest" data-definition="librería para probar endpoints http en aplicaciones node.js/express.">
+        <div class="term-title">Supertest</div>
+        <p>Librería para probar endpoints HTTP en aplicaciones Node.js/Express.</p>
+    </article>
+<article class="term-card" data-term="raíl" data-definition="metáfora usada en la charla para referirse a restricciones, contratos y tests que guían a la ia para que no se salga del diseño.">
+        <div class="term-title">Raíl</div>
+        <p>Metáfora usada en la charla para referirse a restricciones, contratos y tests que guían a la IA para que no se salga del diseño.</p>
+    </article>
+<article class="term-card" data-term="alucinación" data-definition="respuesta inventada o incorrecta de una ia que parece plausible. en código puede traducirse en funciones inexistentes, apis inventadas o decisiones no especificadas.">
+        <div class="term-title">Alucinación</div>
+        <p>Respuesta inventada o incorrecta de una IA que parece plausible. En código puede traducirse en funciones inexistentes, APIs inventadas o decisiones no especificadas.</p>
+    </article>
+<article class="term-card" data-term="fuente de verdad" data-definition="documento, contrato o artefacto que manda sobre los demás. en la presentación, la spec y los contratos deben ser la fuente de verdad, no el prompt improvisado.">
+        <div class="term-title">Fuente de verdad</div>
+        <p>Documento, contrato o artefacto que manda sobre los demás. En la presentación, la Spec y los contratos deben ser la fuente de verdad, no el prompt improvisado.</p>
+    </article>
+<article class="term-card" data-term="determinista" data-definition="algo que produce resultados previsibles y verificables. en la charla se contrapone a validar código solo porque parece que funciona.">
+        <div class="term-title">Determinista</div>
+        <p>Algo que produce resultados previsibles y verificables. En la charla se contrapone a validar código solo porque parece que funciona.</p>
+    </article>
+<article class="term-card" data-term="soberanía técnica" data-definition="capacidad del equipo para mantener el control sobre la arquitectura, decisiones técnicas y evolución del software, en lugar de delegarlo ciegamente en la ia.">
+        <div class="term-title">Soberanía técnica</div>
+        <p>Capacidad del equipo para mantener el control sobre la arquitectura, decisiones técnicas y evolución del software, en lugar de delegarlo ciegamente en la IA.</p>
+    </article>
+    </section>
+
+    <div id="empty" class="empty">
+      No se han encontrado términos con esa búsqueda.
+    </div>
+  </main>
+
+  <footer>
+    XauenDevs / PIVO&CODE 41 · Glosario de apoyo · Prompting Riguroso
+  </footer>
+
+  <script>
+    const searchInput = document.getElementById("search");
+    const cards = Array.from(document.querySelectorAll(".term-card"));
+    const counter = document.getElementById("counter");
+    const empty = document.getElementById("empty");
+
+    function normalize(value) {
+      return value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function applyFilter() {
+      const query = normalize(searchInput.value.trim());
+      let visible = 0;
+
+      cards.forEach((card) => {
+        const haystack = normalize(
+          card.dataset.term + " " + card.dataset.definition
+        );
+
+        const matches = haystack.includes(query);
+        card.style.display = matches ? "" : "none";
+
+        if (matches) visible++;
+      });
+
+      counter.textContent = visible === 1 ? "1 término" : `${visible} términos`;
+      empty.style.display = visible === 0 ? "block" : "none";
+    }
+
+    searchInput.addEventListener("input", applyFilter);
+  </script>
+</body>
+</html>

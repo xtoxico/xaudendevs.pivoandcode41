@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIVO&amp;CODE 41 - Prompting Riguroso</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Lato:wght@300;400;700&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        slateBg: '#0b0f19',
+                        slideDark: '#030712',
+                        // Colores de acento por Capítulo
+                        accentCap1: '#f43f5e', // Rosa/Rojo (Trampa / Peligro / VibeCoding)
+                        accentCap2: '#a855f7', // Púrpura (Estructura / Specs / Contratos)
+                        accentCap3: '#0ea5e9', // Azul (Técnica / Rigor)
+                        accentCap4: '#10b981'  // Esmeralda (Demo Práctica / Éxito)
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0b0f19;
+            font-family: 'Lato', sans-serif;
+            overflow: hidden;
+            color: #f3f4f6;
+        }
+        
+        /* Contenedor principal con relación de aspecto estricta 16:9 */
+        .presentation-viewport {
+            width: 1280px;
+            height: 720px;
+            background-color: #030712;
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease;
+        }
+
+        /* Cuadrícula técnica sutil de fondo */
+        .blueprint-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(244, 63, 94, 0.01) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(244, 63, 94, 0.01) 1px, transparent 1px);
+            background-size: 40px 40px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Estilos de transición para cambios limpios */
+        .slide-element {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 60px 80px;
+            box-sizing: border-box;
+            z-index: 5;
+        }
+
+        .slide-element.active {
+            display: flex;
+        }
+
+        /* Cabeceras de sección elegantes */
+        .slide-header {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 36px;
+            border-left: 6px solid;
+            padding-left: 20px;
+            line-height: 1.2;
+        }
+
+        /* Clases de acento personalizadas */
+        .accent-border-cap1 { border-color: #f43f5e; }
+        .accent-border-cap2 { border-color: #a855f7; }
+        .accent-border-cap3 { border-color: #0ea5e9; }
+        .accent-border-cap4 { border-color: #10b981; }
+
+        .accent-text-cap1 { color: #f43f5e; }
+        .accent-text-cap2 { color: #a855f7; }
+        .accent-text-cap3 { color: #0ea5e9; }
+        .accent-text-cap4 { color: #10b981; }
+    </style>
+</head>
+<body class="h-screen w-screen flex flex-col items-center justify-center p-4">
+
+    <!-- Contenedor Widescreen de Diapositivas -->
+    <div id="slide-viewport" class="presentation-viewport flex shrink-0">
+        <div class="blueprint-grid"></div>
+
+        <!-- ==========================================
+             DIAPOSITIVA 0: PORTADA GENERAL DE LA PONENCIA
+             ========================================== -->
+        <div class="slide-element active justify-center items-center text-center relative" id="slide-0">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-accentCap1 via-accentCap2 via-accentCap3 to-accentCap4"></div>
+            <div class="z-10 max-w-4xl px-8">
+                <p class="text-accentCap3 tracking-widest text-xs font-bold uppercase mb-4 font-mono">PIVO&amp;CODE 41 • 22/may/26</p>
+                <h1 class="text-6xl font-extrabold tracking-tight mb-4 font-sans leading-none">
+                    Prompting <span class="text-transparent bg-clip-text bg-gradient-to-r from-accentCap1 via-accentCap2 to-accentCap3">Riguroso</span>
+                </h1>
+                <p class="text-3xl font-semibold text-slate-300 mb-8 leading-snug">
+                    Por qué tu IA necesita un Arquitecto,<br>
+                    <span class="text-slate-400 font-light">no un entusiasta</span>
+                </p>
+                <div class="w-32 h-1 bg-gradient-to-r from-accentCap1 via-accentCap2 to-accentCap3 mx-auto rounded-full mb-10"></div>
+                <p class="text-xs text-slate-500 font-mono tracking-widest uppercase">Usa las flechas ◀ ▶ o Espacio para navegar</p>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             DIAPOSITIVA 1: PARALELO37 / EVENTO
+             ========================================== -->
+        <div class="slide-element justify-center items-center text-center relative bg-white" id="slide-paralelo37">
+            <img src="paralelo37.jpeg" alt="Paralelo37 - Edificio CETICOM Jaén" class="absolute inset-0 w-full h-full object-contain">
+        </div>
+
+        <!-- ==========================================
+             DIAPOSITIVA 1: QUIÉN SOY (WHOAMI)
+             ========================================== -->
+        <div class="slide-element" id="slide-1">
+            <div>
+                <span class="text-xs font-mono text-accentCap3 uppercase tracking-widest">Presentación</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap3 mt-2">¿Quién soy?</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-8 items-center my-auto z-10">
+                <!-- Foto de Perfil y Redes -->
+                <div class="col-span-4 flex flex-col items-center text-center space-y-4">
+                    <div class="relative group">
+                        <div class="absolute -inset-1.5 bg-gradient-to-r from-accentCap3 to-accentCap4 rounded-2xl blur opacity-30 group-hover:opacity-50 transition duration-300"></div>
+                        <img src="image_de4685.jpg" alt="Antonio Tirado Peña" class="relative w-48 h-48 object-cover rounded-2xl border-2 border-slate-800 shadow-2xl">
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-bold text-slate-100 font-sans">Antonio Tirado Peña</h4>
+                        <p class="text-accentCap3 font-mono text-sm">@xtoxico</p>
+                    </div>
+                </div>
+
+                <!-- Detalles Profesionales / Perfil -->
+                <div class="col-span-8 grid grid-cols-1 gap-4 text-xs">
+                    <!-- Tarjeta 1: Estrategia y Producto -->
+                    <div class="bg-slate-950/70 border border-slate-900 p-4 rounded-xl space-y-2">
+                        <div class="flex items-center gap-2 text-accentCap3 font-bold font-sans text-sm">
+                            <i class="fa-solid fa-briefcase"></i>
+                            <span>ESTRATEGIA & PRODUCTO</span>
+                        </div>
+                        <ul class="list-disc list-inside text-slate-300 space-y-1 pl-1">
+                            <li><strong class="text-slate-100">Director de IT y Estrategia</strong> @ Instituto de Innovación, Ciencia y Empresa</li>
+                            <li><strong class="text-slate-100">Product Strategist</strong> de NormaPro (Cumplimiento Normativo Digitalizado)</li>
+                            <li>Ing. Técnica Informática de Gestión (UJA) + Postgrado en Digital Product Management (IEBS)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Tarjeta 2: Rigor Técnico y Certificaciones -->
+                    <div class="bg-slate-950/70 border border-slate-900 p-4 rounded-xl space-y-2">
+                        <div class="flex items-center gap-2 text-accentCap4 font-bold font-sans text-sm">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <span>RIGOR TÉCNICO & CERTIFICACIONES</span>
+                        </div>
+                        <ul class="list-disc list-inside text-slate-300 space-y-1 pl-1">
+                            <li>Azure Solutions Architect Expert, Linux (LPIC2), Oracle DB, Cisco (CCNA), Python (IBM)</li>
+                            <li>Maker de corazón | Perfil <span class="text-accentCap4 font-semibold">Hands-on</span> | Cultura DIY | Arch Linux User</li>
+                        </ul>
+                    </div>
+
+                    <!-- Tarjeta 3: Stack & IA -->
+                    <div class="bg-slate-950/70 border border-slate-900 p-4 rounded-xl space-y-2">
+                        <div class="flex items-center gap-2 text-purple-400 font-bold font-sans text-sm">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <span>STACK & R&D</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-slate-300">
+                            <div>
+                                <span class="font-bold text-slate-100 block">Day job:</span> Node.js, TypeScript, Angular
+                            </div>
+                            <div>
+                                <span class="font-bold text-slate-100 block">Night shift / R&D:</span> Rust, Python
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-slate-400 italic pt-1 border-t border-slate-900">
+                            Entusiasta y adoptante de la IA desde sus inicios, aplicando control arquitectónico estricto.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>Ponente</span>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             CAPÍTULO 1: LA TRAMPA DEL VIBECODING
+             ========================================== -->
+
+        <!-- SECCIÓN 01: PORTADA SECCIÓN 01 -->
+        <div class="slide-element justify-center items-center text-center relative" id="slide-2">
+            <div class="absolute top-0 left-0 w-full h-1 bg-accentCap1"></div>
+            <div class="z-10">
+                <span class="text-accentCap1 tracking-widest text-xs font-bold uppercase mb-2 block font-mono">Capítulo 01 • Sección 01</span>
+                <h2 class="text-5xl font-extrabold text-slate-100 font-sans mb-6">¿Qué es el VibeCoding?</h2>
+                <div class="w-16 h-1 bg-accentCap1 mx-auto rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 01 - DIAPO 1: DEL MEME AL HECHO -->
+        <div class="slide-element" id="slide-3">
+            <div>
+                <span class="text-xs font-mono text-accentCap1 uppercase tracking-widest">Sección 01 • Diapositiva 1</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap1 mt-2">Del Meme al Hecho</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-7 space-y-6">
+                    <p class="text-2xl text-slate-300 font-light leading-relaxed">
+                        El término <span class="font-semibold text-accentCap1">"VibeCoding"</span> nació en las redes como un meme divertido, pero hoy representa una descripción dolorosamente exacta del desarrollo de software actual.
+                    </p>
+                    <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl">
+                        <h4 class="text-sm font-bold text-slate-200 mb-2 uppercase tracking-wide font-mono">Definición de VibeCoding:</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            El acto de programar por "sensaciones" o "vibras": escribir una idea vaga en Cursor, Copilot o ChatGPT y aceptar ciegamente el código resultante porque, a primera vista, "parece que funciona" o el linter no da errores.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-span-5 flex justify-center">
+                    <div class="w-full bg-slate-950 border border-slate-800 p-8 rounded-3xl text-center shadow-2xl relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-accentCap1/10 rounded-full blur-2xl"></div>
+                        <i class="fa-solid fa-wand-magic-sparkles text-6xl text-accentCap1 mb-4"></i>
+                        <h4 class="text-lg font-bold text-slate-200 mb-2">"Vibras sobre Rigor"</h4>
+                        <p class="text-xs text-slate-500 font-mono">Aceptación ciega de bloques de código por la simple ausencia de alertas visuales.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Trampa del VibeCoding</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 01 - DIAPO 2: EL SESGO DE LA INMEDIATEZ -->
+        <div class="slide-element" id="slide-4">
+            <div>
+                <span class="text-xs font-mono text-accentCap1 uppercase tracking-widest">Sección 01 • Diapositiva 2</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap1 mt-2">El Sesgo de la Inmediatez</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-5">
+                    <div class="bg-gradient-to-br from-slate-950 to-slate-900 border border-slate-800 p-10 rounded-3xl text-center relative shadow-2xl">
+                        <div class="text-7xl font-extrabold text-accentCap1 font-mono mb-2">3 seg</div>
+                        <p class="text-sm uppercase tracking-wider text-slate-400 font-mono">50 líneas de código</p>
+                        <p class="text-xs text-slate-600 mt-2">Gratificación instantánea automatizada</p>
+                    </div>
+                </div>
+                <div class="col-span-7 space-y-6">
+                    <h4 class="text-2xl font-bold text-slate-200">La Adicción a la Velocidad de Sintaxis</h4>
+                    <p class="text-lg text-slate-300 font-light leading-relaxed">
+                        Ver cómo la IA escupe decenas de líneas de código en segundos genera una descarga de dopamina cognitiva que nos hace sentir increíblemente productivos.
+                    </p>
+                    <p class="text-slate-400 text-sm leading-relaxed border-l-4 border-accentCap1 pl-4 italic">
+                        "Confundimos escribir código rápido con resolver problemas de ingeniería."
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Trampa del VibeCoding</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 01 - DIAPO 3: PÉRDIDA DEL ANÁLISIS CRÍTICO -->
+        <div class="slide-element" id="slide-5">
+            <div>
+                <span class="text-xs font-mono text-accentCap1 uppercase tracking-widest">Sección 01 • Diapositiva 3</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap1 mt-2">Erosión del Análisis Crítico</h3>
+            </div>
+            <div class="grid grid-cols-2 gap-8 my-auto z-10">
+                <div class="bg-slate-950/40 border border-slate-900 p-8 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-mono text-slate-500 uppercase tracking-widest block mb-2">Flujo Tradicional de Desarrollo</span>
+                        <h4 class="text-lg font-bold text-slate-200 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-brain text-accentCap3"></i> Rol Activo Pensante
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Inversión previa de tiempo para conceptualizar la modularidad, acoplamiento, flujos y manejo de excepciones antes de tocar una sola tecla del editor.
+                        </p>
+                    </div>
+                    <span class="text-xs text-accentCap3 font-mono mt-4">Análisis riguroso manual</span>
+                </div>
+                <div class="bg-slate-950/40 border border-slate-900 p-8 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-mono text-slate-500 uppercase tracking-widest block mb-2">Flujo VibeCoding de Desarrollo</span>
+                        <h4 class="text-lg font-bold text-slate-200 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-eye text-accentCap1"></i> Espectador Pasivo
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Delegación del pensamiento en el modelo. El desarrollador se limita a validar superficialmente que el "happy path" funciona en local.
+                        </p>
+                    </div>
+                    <span class="text-xs text-accentCap1 font-mono mt-4">Delegación cognitiva absoluta</span>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Trampa del VibeCoding</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 02: PORTADA SECCIÓN 02 -->
+        <div class="slide-element justify-center items-center text-center relative" id="slide-6">
+            <div class="absolute top-0 left-0 w-full h-1 bg-accentCap1"></div>
+            <div class="z-10">
+                <span class="text-accentCap1 tracking-widest text-xs font-bold uppercase mb-2 block font-mono">Capítulo 01 • Sección 02</span>
+                <h2 class="text-5xl font-extrabold text-slate-100 font-sans mb-6">El Coste de las Sensaciones</h2>
+                <div class="w-16 h-1 bg-accentCap1 mx-auto rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 02 - DIAPO 1: EL LÍMITE DEL PROTOTIPO -->
+        <div class="slide-element" id="slide-7">
+            <div>
+                <span class="text-xs font-mono text-accentCap1 uppercase tracking-widest">Sección 02 • Diapositiva 1</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap1 mt-2">El Límite del Prototipo</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-7 space-y-6">
+                    <p class="text-2xl text-slate-300 font-light leading-relaxed">
+                        El VibeCoding funciona de maravilla para scripts de 20 líneas, maquetas visuales desechables o proyectos personales de fin de semana.
+                    </p>
+                    <div class="bg-red-950/20 border border-red-500/20 p-6 rounded-2xl">
+                        <h4 class="text-sm font-bold text-accentCap1 mb-2 uppercase tracking-wide font-mono">El Punto de Quiebre Técnico:</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            El enfoque se rompe cuando intentas aplicarlo a software empresarial o a sistemas que tienen que durar más de un mes.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-span-5">
+                    <div class="border border-slate-800 bg-slate-950/80 p-6 rounded-2xl flex flex-col justify-center items-center h-64 text-center">
+                        <i class="fa-solid fa-hourglass-half text-5xl text-accentCap1 mb-4"></i>
+                        <p class="text-slate-200 font-bold">Límite de Vida del Software</p>
+                        <p class="text-xs text-slate-500 mt-2">¿Durará más de 30 días con múltiples desarrolladores interactuando en él?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Trampa del VibeCoding</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 02 - DIAPO 2: DEUDA TÉCNICA ACELERADA -->
+        <div class="slide-element" id="slide-8">
+            <div>
+                <span class="text-xs font-mono text-accentCap1 uppercase tracking-widest">Sección 02 • Diapositiva 2</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap1 mt-2">Deuda Técnica Acelerada</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-5">
+                    <div class="bg-slate-950 border border-red-950 p-8 rounded-3xl text-center shadow-2xl relative overflow-hidden">
+                        <div class="text-7xl font-extrabold text-accentCap1 font-mono mb-2">3 sem</div>
+                        <p class="text-sm uppercase tracking-wider text-slate-400 font-mono">El Frankenstein Inmantenible</p>
+                        <p class="text-xs text-slate-600 mt-2">Tiempo estimado de degradación estructural sin control</p>
+                    </div>
+                </div>
+                <div class="col-span-7 space-y-6">
+                    <h4 class="text-2xl font-bold text-slate-200">Hiperinflación de Código por IA</h4>
+                    <p class="text-lg text-slate-300 font-light leading-relaxed">
+                        Históricamente, la deuda técnica crecía orgánicamente por falta de tiempo. Con la IA, se inyecta de forma masiva en segundos porque el modelo carece de contexto global y solo busca resolver el prompt aislado del momento.
+                    </p>
+                    <p class="text-slate-400 text-sm leading-relaxed border-l-4 border-accentCap1 pl-4 italic">
+                        "Si le pides un parche, te dará el parche más rápido, aunque ignore el patrón arquitectónico del resto del proyecto."
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Trampa del VibeCoding</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 02 - DIAPO 3: CONTROL DE FLUJO Y CÓDIGO ESPAGUETI -->
+        <div class="slide-element" id="slide-9">
+            <div>
+                <span class="text-xs font-mono text-accentCap1 uppercase tracking-widest">Sección 02 • Diapositiva 3</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap1 mt-2">Síntomas del Caos</h3>
+            </div>
+            <div class="grid grid-cols-2 gap-8 my-auto z-10">
+                <div class="bg-slate-950/60 border border-slate-900 p-8 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-lg font-bold text-slate-200 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-circle-nodes text-accentCap1"></i> Pérdida del Control del Flujo
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Al no haber diseñado mentalmente la estructura de los datos, dejas de comprender cómo se comunican las dependencias. Nace el miedo a refactorizar porque se desconoce el impacto en el otro extremo de la app.
+                        </p>
+                    </div>
+                    <span class="text-xs text-slate-600 font-mono mt-4">Parálisis por falta de control</span>
+                </div>
+                <div class="bg-slate-950/60 border border-slate-900 p-8 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-lg font-bold text-slate-200 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-masks-theater text-accentCap1"></i> El "Código Espagueti de IA"
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Un caos sutil, ordenado e impecablemente indentado. Usa nombres de variables elegantes y comentarios sumamente convincentes, pero esconde un acoplamiento infernal y llamadas de base de datos ineficientes.
+                        </p>
+                    </div>
+                    <span class="text-xs text-accentCap1 font-mono mt-4">Caos vestido de gala</span>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Trampa del VibeCoding</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 03: PORTADA SECCIÓN 03 -->
+        <div class="slide-element justify-center items-center text-center relative" id="slide-10">
+            <div class="absolute top-0 left-0 w-full h-1 bg-accentCap1"></div>
+            <div class="z-10">
+                <span class="text-accentCap1 tracking-widest text-xs font-bold uppercase mb-2 block font-mono">Capítulo 01 • Sección 03</span>
+                <h2 class="text-5xl font-extrabold text-slate-100 font-sans mb-6">El Rol del Arquitecto</h2>
+                <div class="w-16 h-1 bg-accentCap1 mx-auto rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 03 - DIAPO 1: LA PARADOJA JUNIOR VS SENIOR -->
+        <div class="slide-element" id="slide-11">
+            <div>
+                <span class="text-xs font-mono text-accentCap1 uppercase tracking-widest">Sección 03 • Diapositiva 1</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap1 mt-2">La Paradoja de Roles</h3>
+            </div>
+            <div class="grid grid-cols-2 gap-8 my-auto z-10">
+                <div class="bg-slate-950/40 border border-slate-900 p-8 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-mono text-slate-500 uppercase tracking-widest block mb-2">Perspectiva del Junior</span>
+                        <h4 class="text-lg font-bold text-slate-200 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-wand-magic text-slate-400"></i> La Varita Mágica
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Ve la IA como una varita mágica que escribe el código que aún no sabe escribir.
+                        </p>
+                    </div>
+                    <span class="text-xs text-slate-600 font-mono mt-4">Evasión de responsabilidad</span>
+                </div>
+                <div class="bg-slate-950/40 border border-slate-800 p-8 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-mono text-accentCap1 uppercase tracking-widest block mb-2">Perspectiva del Arquitecto</span>
+                        <h4 class="text-lg font-bold text-accentCap1 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-train text-accentCap1"></i> Motor de Altísima Tracción
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Ve la IA como un motor de ejecución ultrapotente que necesita raíles estrictos para no descarrilar.
+                        </p>
+                    </div>
+                    <span class="text-xs text-accentCap1 font-mono mt-4">Estructuración técnica estricta</span>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Trampa del VibeCoding</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 03 - DIAPO 2: DISEÑO VS IMPLEMENTACIÓN -->
+        <div class="slide-element" id="slide-12">
+            <div>
+                <span class="text-xs font-mono text-accentCap1 uppercase tracking-widest">Sección 03 • Diapositiva 2</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap1 mt-2">Diseño vs. Implementación</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-7 space-y-6">
+                    <p class="text-xl text-slate-300 font-light leading-relaxed">
+                        El cuello de botella ya no es memorizar sintaxis ni escribir boilerplate. Eso lo resuelve muy bien la IA.
+                    </p>
+                    <div class="bg-slate-950 border border-slate-800 p-6 rounded-2xl">
+                        <h4 class="text-sm font-bold text-slate-200 mb-2 uppercase tracking-wide font-mono flex items-center gap-2">
+                            <i class="fa-solid fa-lightbulb text-accentCap1"></i> El Verdadero Bottleneck Actual: El Criterio
+                        </h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Saber qué patrón de diseño encaja, cómo aislar las capas de la aplicación y cuáles son las restricciones reales de negocio.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-span-5">
+                    <div class="border border-slate-800 bg-slate-950/80 p-8 rounded-2xl text-center">
+                        <i class="fa-solid fa-compass-drafting text-5xl text-accentCap1 mb-4"></i>
+                        <h4 class="text-md font-bold text-slate-200 mb-1">Criterio sobre Sintaxis</h4>
+                        <p class="text-xs text-slate-500">Donde reside el verdadero valor del Ingeniero Senior en la actualidad.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Trampa del VibeCoding</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 03 - DIAPO 3: TOMAR EL MANDO -->
+        <div class="slide-element justify-between" id="slide-13">
+            <div>
+                <span class="text-xs font-mono text-accentCap1 uppercase tracking-widest">Sección 03 • Diapositiva 3</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap1 mt-2">Tomar el Mando</h3>
+            </div>
+            <div class="my-auto z-10 max-w-4xl mx-auto text-center space-y-8">
+                <p class="text-2xl text-slate-300 font-light leading-relaxed">
+                    Si dejas que la IA proponga de forma autónoma la arquitectura, elegirá la senda más genérica y propensa a generar incoherencias de diseño. Tu valor es definir las reglas del juego.
+                </p>
+                <div class="bg-red-950/20 border border-red-500/20 p-8 rounded-3xl relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-accentCap1/30 absolute top-4 left-6"></i>
+                    <p class="text-xl italic text-slate-200 font-semibold px-8 leading-relaxed">
+                        "La IA es un copiloto fantástico, pero si el piloto no sabe a dónde va el avión, el copiloto simplemente os ayudará a estrellaros contra la montaña mucho más rápido."
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Trampa del VibeCoding</span>
+            </div>
+        </div>
+
+
+        <!-- ==========================================
+             CAPÍTULO 2: DESIGN SPECS DEVELOPMENT
+             ========================================== -->
+
+        <!-- SECCIÓN 04: PORTADA SECCIÓN 04 -->
+        <div class="slide-element justify-center items-center text-center relative" id="slide-14">
+            <div class="absolute top-0 left-0 w-full h-1 bg-accentCap2"></div>
+            <div class="z-10">
+                <span class="text-accentCap2 tracking-widest text-xs font-bold uppercase mb-2 block font-mono">Capítulo 02 • Sección 04</span>
+                <h2 class="text-5xl font-extrabold text-slate-100 font-sans mb-6">Documentación Viva</h2>
+                <div class="w-16 h-1 bg-accentCap2 mx-auto rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 04 - DIAPO 1: EL PROMPT VS LA SPEC -->
+        <div class="slide-element" id="slide-15">
+            <div>
+                <span class="text-xs font-mono text-accentCap2 uppercase tracking-widest">Sección 04 • Diapositiva 1</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap2 mt-2">El Prompt es Efímero; la Spec es Permanente</h3>
+            </div>
+            <div class="grid grid-cols-2 gap-8 my-auto z-10">
+                <div class="bg-slate-950/40 border border-slate-900 p-8 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-mono text-slate-500 uppercase tracking-widest block mb-2">Petición Reactiva</span>
+                        <h4 class="text-lg font-bold text-slate-300 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-comment-slash text-slate-500"></i> El Prompt Improvisado
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Tratar la interfaz de chat de la IA como un bloc de notas donde se apilan parches rápidos y peticiones reactivas. Conduce irremediablemente a la inconsistencia y pérdida de control global.
+                        </p>
+                    </div>
+                    <span class="text-xs text-slate-500 font-mono mt-4">Lienzo en blanco e ineficiente</span>
+                </div>
+                <div class="bg-slate-950/40 border border-accentCap2/20 p-8 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <span class="text-xs font-mono text-accentCap2 uppercase tracking-widest block mb-2">Instrucción Persistente</span>
+                        <h4 class="text-lg font-bold text-accentCap2 mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-file-invoice text-accentCap2"></i> La Design Spec
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Un documento de diseño técnico escrito en Markdown que vive en tu repositorio junto al código de producción. Define de forma inmutable la guía rectora de desarrollo para la IA.
+                        </p>
+                    </div>
+                    <span class="text-xs text-accentCap2 font-mono mt-4">Documentación estructurada y duradera</span>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>Design Specs Development</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 04 - DIAPO 2: QUÉ ES UNA SPEC EN LA ERA IA -->
+        <div class="slide-element" id="slide-16">
+            <div>
+                <span class="text-xs font-mono text-accentCap2 uppercase tracking-widest">Sección 04 • Diapositiva 2</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap2 mt-2">¿Qué es una Spec en la Era de la IA?</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-7 space-y-6">
+                    <p class="text-xl text-slate-300 font-light leading-relaxed">
+                        Es un archivo `.md`, o un conjunto pequeño de archivos, que vive en el repositorio junto al código y contiene reglas de negocio, casos de uso, arquitectura y restricciones técnicas.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4 text-xs font-mono text-slate-400">
+                        <div class="bg-slate-950 border border-slate-900 p-4 rounded-xl">
+                            <span class="text-accentCap2 font-bold block mb-1">✓ Lógicas del Negocio</span>
+                            Reglas de dominio y casos de uso del mundo real.
+                        </div>
+                        <div class="bg-slate-950 border border-slate-900 p-4 rounded-xl">
+                            <span class="text-accentCap2 font-bold block mb-1">✓ Límites del Diseño</span>
+                            Patrón técnico elegido y contratos de servicios.
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-5">
+                    <div class="bg-slate-950 border border-slate-800 p-6 rounded-2xl">
+                        <div class="flex items-center gap-2 mb-3 text-xs text-slate-500 font-mono">
+                            <i class="fa-solid fa-file-code text-accentCap2"></i> docs/specs/auth_system.md
+                        </div>
+                        <div class="text-xs font-mono text-slate-400 space-y-2">
+                            <p class="text-accentCap2 font-bold"># Spec: Autenticación</p>
+                            <p>## 1. Casos de Uso</p>
+                            <p class="text-slate-500">- Bloqueo tras 3 intentos fallidos.</p>
+                            <p>## 2. Restricciones</p>
+                            <p class="text-slate-500">- Token JWT debe expirar en 15m.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>Design Specs Development</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 04 - DIAPO 3: IA COMO CONSUMIDORA Y DOC VIVA -->
+        <div class="slide-element" id="slide-17">
+            <div>
+                <span class="text-xs font-mono text-accentCap2 uppercase tracking-widest">Sección 04 • Diapositiva 3</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap2 mt-2">La IA como Consumidora</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-6 space-y-6">
+                    <h4 class="text-xl font-bold text-slate-200">El Cambio Metodológico: Dónde Leer</h4>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Al configurar entornos nativos de IA (como las reglas de workspace o prompts del sistema), el Arquitecto ya no enseña a programar a la IA; le dice en qué parte del disco leer las políticas actuales.
+                    </p>
+                    <div class="bg-slate-950 p-4 rounded-xl border border-slate-900 font-mono text-xs text-slate-400">
+                        <span class="text-accentCap2">System Rule:</span> "Lee docs/specs/auth_system.md de forma obligatoria antes de modificar o crear archivos de lógica en este módulo."
+                    </div>
+                </div>
+                <div class="col-span-6 space-y-4">
+                    <div class="bg-slate-900/60 p-6 rounded-2xl border border-slate-800">
+                        <span class="text-xs uppercase font-mono text-accentCap2 tracking-wider font-bold block mb-1">Documentación Viva</span>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Si las necesidades del negocio cambian, no alteras el prompt efímero: actualizas el archivo Markdown de la Spec en Git. La IA reacciona inmediatamente al nuevo contexto en el siguiente ciclo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>Design Specs Development</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 05: PORTADA SECCIÓN 05 -->
+        <div class="slide-element justify-center items-center text-center relative" id="slide-18">
+            <div class="absolute top-0 left-0 w-full h-1 bg-accentCap2"></div>
+            <div class="z-10">
+                <span class="text-accentCap2 tracking-widest text-xs font-bold uppercase mb-2 block font-mono">Capítulo 02 • Sección 05</span>
+                <h2 class="text-5xl font-extrabold text-slate-100 font-sans mb-6">Contratos como Fuente de Verdad</h2>
+                <div class="w-16 h-1 bg-accentCap2 mx-auto rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 05 - DIAPO 1: CERO LÓGICA SIN CONTRATO -->
+        <div class="slide-element" id="slide-19">
+            <div>
+                <span class="text-xs font-mono text-accentCap2 uppercase tracking-widest">Sección 05 • Diapositiva 1</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap2 mt-2">Cero Lógica sin Contrato</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-5">
+                    <div class="bg-slate-950 border border-slate-900 p-8 rounded-3xl text-center shadow-2xl relative overflow-hidden">
+                        <div class="text-7xl font-extrabold text-accentCap2 font-mono mb-2">0%</div>
+                        <p class="text-sm uppercase tracking-wider text-slate-400 font-mono">Margen de Improvisación</p>
+                        <p class="text-xs text-slate-500 mt-2">Toda interfaz debe estar sellada antes de codificar la lógica</p>
+                    </div>
+                </div>
+                <div class="col-span-7 space-y-6">
+                    <h4 class="text-2xl font-bold text-slate-200">Fronteras Innegociables</h4>
+                    <p class="text-lg text-slate-300 font-light leading-relaxed">
+                        Si dejas que la IA defina los esquemas de intercambio de información de forma dinámica, cada endpoint inventará un formato de datos diferente, rompiendo la coherencia de tu aplicación.
+                    </p>
+                    <p class="text-slate-400 text-sm leading-relaxed border-l-4 border-accentCap2 pl-4 italic">
+                        "El rigor metodológico inicia delimitando de forma matemática las fronteras de tu software antes de escribir una sola línea lógica."
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>Design Specs Development</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 05 - DIAPO 2: HERRAMIENTAS COMO RAÍLES -->
+        <div class="slide-element" id="slide-20">
+            <div>
+                <span class="text-xs font-mono text-accentCap2 uppercase tracking-widest">Sección 05 • Diapositiva 2</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap2 mt-2">Herramientas de Tipado y Validación</h3>
+            </div>
+            <div class="grid grid-cols-3 gap-6 my-auto z-10">
+                <div class="bg-slate-950/80 border border-slate-900 p-6 rounded-xl flex flex-col justify-between h-64">
+                    <div>
+                        <div class="w-10 h-10 rounded-lg bg-accentCap2/10 flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-code text-accentCap2"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-200 mb-2">OpenAPI / Swagger</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Definición formal e inequívoca del comportamiento del API (verbos, códigos de retorno y esquemas).
+                        </p>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-mono uppercase">Contratos HTTP</span>
+                </div>
+                <div class="bg-slate-950/80 border border-slate-900 p-6 rounded-xl flex flex-col justify-between h-64">
+                    <div>
+                        <div class="w-10 h-10 rounded-lg bg-accentCap2/10 flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-shield-halved text-accentCap2"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-200 mb-2">Zod / TypeBox</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Validación estricta y blindaje del tipado de entrada y salida en tiempo de ejecución.
+                        </p>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-mono uppercase">Runtime Validation</span>
+                </div>
+                <div class="bg-slate-950/80 border border-slate-900 p-6 rounded-xl flex flex-col justify-between h-64">
+                    <div>
+                        <div class="w-10 h-10 rounded-lg bg-accentCap2/10 flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-gears text-accentCap2"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-200 mb-2">Types de TS / Rust</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Tipado estático inquebrantable que obliga al compilador a validar el flujo interno de la app.
+                        </p>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-mono uppercase">Compile-time Safety</span>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>Design Specs Development</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 05 - DIAPO 3: EL FLUJO DEL CONTRATO -->
+        <div class="slide-element" id="slide-21">
+            <div>
+                <span class="text-xs font-mono text-accentCap2 uppercase tracking-widest">Sección 05 • Diapositiva 3</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap2 mt-2">El Flujo del Contrato</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-7 space-y-6">
+                    <p class="text-xl text-slate-300 font-light leading-relaxed">
+                        Le proporcionas a la IA el contrato exacto (OpenAPI o la interfaz de TS) y le exiges acoplarse estrictamente a esa firma lógica.
+                    </p>
+                    <div class="bg-slate-950 border border-slate-900 p-6 rounded-2xl">
+                        <h4 class="text-sm font-bold text-slate-200 mb-1 uppercase font-mono text-accentCap2">Beneficio de Velocidad y Precisión:</h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Al automatizar la validación del contrato, el espacio probabilístico de respuestas de la IA se reduce drásticamente. El modelo ya no improvisa nombres; encauza todo su potencial computacional exclusivamente a codificar la lógica del negocio.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-span-5">
+                    <div class="bg-slate-950 border border-slate-800 p-6 rounded-xl font-mono text-xs text-slate-400 space-y-2">
+                        <span class="text-slate-500">// Interfaz rígida e inamovible</span>
+                        <p><span class="text-accentCap2">interface</span> <span class="text-slate-100">UserPayload</span> {</p>
+                        <p class="pl-4">id: <span class="text-accentCap2">string</span>;</p>
+                        <p class="pl-4">email: <span class="text-accentCap2">string</span>;</p>
+                        <p class="pl-4">createdAt: <span class="text-accentCap2">Date</span>;</p>
+                        <p>}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>Design Specs Development</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 06: PORTADA SECCIÓN 06 -->
+        <div class="slide-element justify-center items-center text-center relative" id="slide-22">
+            <div class="absolute top-0 left-0 w-full h-1 bg-accentCap2"></div>
+            <div class="z-10">
+                <span class="text-accentCap2 tracking-widest text-xs font-bold uppercase mb-2 block font-mono">Capítulo 02 • Sección 06</span>
+                <h2 class="text-5xl font-extrabold text-slate-100 font-sans mb-6">Context Window Optimization</h2>
+                <div class="w-16 h-1 bg-accentCap2 mx-auto rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 06 - DIAPO 1: EL MITO DEL CONTEXTO INFINITO -->
+        <div class="slide-element" id="slide-23">
+            <div>
+                <span class="text-xs font-mono text-accentCap2 uppercase tracking-widest">Sección 06 • Diapositiva 1</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap2 mt-2">El Mito del Contexto Infinito</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-5">
+                    <div class="bg-slate-950 border border-slate-900 p-8 rounded-3xl shadow-2xl relative overflow-hidden">
+                        <div class="h-24 flex items-end justify-between gap-2 px-2 mb-4">
+                            <div class="w-full bg-accentCap2 h-[100%] rounded-t-sm" title="Inicio: Atención alta"></div>
+                            <div class="w-full bg-slate-800 h-[25%] rounded-t-sm" title="Centro: Pérdida extrema"></div>
+                            <div class="w-full bg-slate-800 h-[30%] rounded-t-sm" title="Centro: Pérdida de contexto"></div>
+                            <div class="w-full bg-accentCap2 h-[90%] rounded-t-sm" title="Final: Atención alta"></div>
+                        </div>
+                        <div class="text-center">
+                            <span class="text-[10px] text-slate-500 uppercase tracking-widest font-mono font-bold block mb-1">Lost in the Middle</span>
+                            <p class="text-xs text-slate-400 font-mono">Atención dispersa / Lost in the Middle</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-7 space-y-6">
+                    <h4 class="text-2xl font-bold text-slate-200">Más contexto no es mejor comprensión</h4>
+                    <p class="text-lg text-slate-300 font-light leading-relaxed">
+                        Aunque las IA modernas soporten miles de tokens, su capacidad cognitiva y su precisión decaen a medida que añadimos ruido o archivos irrelevantes de la base de código.
+                    </p>
+                    <p class="text-slate-400 text-sm leading-relaxed border-l-4 border-accentCap2 pl-4 italic">
+                        "Inyectar datos innecesarios confunde al modelo, causando que ignore directrices críticas o mezcle accidentalmente bases lógicas antiguas con componentes nuevos."
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>Design Specs Development</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 06 - DIAPO 2: ESTRUCTURAR PARA OPTIMIZAR (ATOMIC SPECS) -->
+        <div class="slide-element" id="slide-24">
+            <div>
+                <span class="text-xs font-mono text-accentCap2 uppercase tracking-widest">Sección 06 • Diapositiva 2</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap2 mt-2">Atomic Specs</h3>
+            </div>
+            <div class="grid grid-cols-3 gap-6 my-auto z-10">
+                <div class="bg-slate-950/80 border border-slate-900 p-6 rounded-xl flex flex-col justify-between h-64">
+                    <div>
+                        <div class="font-mono text-[10px] text-accentCap2 mb-2">specs/domain_model.md</div>
+                        <h4 class="font-bold text-slate-200 mb-2">Dominio Puro</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Contiene de forma atómica únicamente las entidades y reglas duras del negocio, completamente libre de frameworks o librerías externas.
+                        </p>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-mono uppercase">Capa del Negocio</span>
+                </div>
+                <div class="bg-slate-950/80 border border-slate-900 p-6 rounded-xl flex flex-col justify-between h-64">
+                    <div>
+                        <div class="font-mono text-[10px] text-accentCap2 mb-2">specs/api_contracts.md</div>
+                        <h4 class="font-bold text-slate-200 mb-2">Firmas de APIs</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Encapsula estrictamente las firmas públicas, endpoints definidos, validaciones de entrada y modelos Swagger.
+                        </p>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-mono uppercase">Capa del Transporte</span>
+                </div>
+                <div class="bg-slate-950/80 border border-slate-900 p-6 rounded-xl flex flex-col justify-between h-64">
+                    <div>
+                        <div class="font-mono text-[10px] text-accentCap2 mb-2">specs/infrastructure.md</div>
+                        <h4 class="font-bold text-slate-200 mb-2">Infraestructura</h4>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Modelados de persistencia de datos (como Prisma), adaptadores de almacenamiento y herramientas autorizadas.
+                        </p>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-mono uppercase">Capa de Persistencia</span>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>Design Specs Development</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 06 - DIAPO 3: INYECCIÓN SELECTIVA Y FRASE DE CIERRE -->
+        <div class="slide-element justify-between" id="slide-25">
+            <div>
+                <span class="text-xs font-mono text-accentCap2 uppercase tracking-widest">Sección 06 • Diapositiva 3</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap2 mt-2">Inyección Selectiva</h3>
+            </div>
+            <div class="my-auto z-10 max-w-4xl mx-auto text-center space-y-8">
+                <p class="text-2xl text-slate-300 font-light leading-relaxed">
+                    Menos es más. Si vas a codificar el almacenamiento de persistencia, alimenta a la IA únicamente con el modelo del dominio y la especificación del ORM. Oculta el CSS de UI y la lógica de endpoints innecesaria.
+                </p>
+                <div class="bg-purple-950/20 border border-accentCap2/30 p-8 rounded-3xl relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-accentCap2/30 absolute top-4 left-6"></i>
+                    <p class="text-xl italic text-slate-200 font-semibold px-8 leading-relaxed">
+                        "La IA no es mala leyendo código; nosotros somos malos acotando lo que tiene que leer. Diseñar la Spec es darle a la IA un mapa de Jaén en lugar de un globo terráqueo cuando solo tiene que ir a la catedral."
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>Design Specs Development</span>
+            </div>
+        </div>
+
+
+        <!-- ==========================================
+             CAPÍTULO 3: LA TÉCNICA - RIGOROUS PROMPTING
+             ========================================== -->
+
+        <!-- SECCIÓN 07: PORTADA SECCIÓN 07 -->
+        <div class="slide-element justify-center items-center text-center relative" id="slide-26">
+            <div class="absolute top-0 left-0 w-full h-1 bg-accentCap3"></div>
+            <div class="z-10">
+                <span class="text-accentCap3 tracking-widest text-xs font-bold uppercase mb-2 block font-mono">Capítulo 03 • Sección 07</span>
+                <h2 class="text-5xl font-extrabold text-slate-100 font-sans mb-6">Chain-of-Thought aplicado a la arquitectura</h2>
+                <div class="w-16 h-1 bg-accentCap3 mx-auto rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 07 - DIAPO 1: RAZONAMIENTO ANTES DE CODIFICAR -->
+        <div class="slide-element" id="slide-27">
+            <div>
+                <span class="text-xs font-mono text-accentCap3 uppercase tracking-widest">Sección 07 • Diapositiva 1</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap3 mt-2">Razonamiento Antes que Código</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-7 space-y-6">
+                    <p class="text-2xl text-slate-300 font-light leading-relaxed">
+                        El peligro inherente de los LLMs es la velocidad: escupen código tan rápido que no se detienen a analizar si es la senda óptima para el proyecto.
+                    </p>
+                    <div class="bg-slate-950 border border-slate-900 p-6 rounded-2xl">
+                        <h4 class="text-sm font-bold text-slate-200 mb-1 uppercase tracking-wide font-mono">Rigor Metodológico CoT:</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            No consiste en pedirle que razone de forma genérica "paso a paso". Significa forzar al modelo a realizar un análisis técnico riguroso de trade-offs arquitectónicos en formato de texto puro antes de escribir una sola línea lógica.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-span-5 flex justify-center">
+                    <div class="border border-slate-800 bg-slate-950/80 p-8 rounded-2xl text-center">
+                        <i class="fa-solid fa-arrows-spin text-5xl text-accentCap3 mb-4 animate-spin" style="animation-duration: 15s;"></i>
+                        <h4 class="text-md font-bold text-slate-200">Alterar el Orden</h4>
+                        <p class="text-xs text-slate-500 mt-1">Obliga a estructurar conceptualmente la solución técnica primero.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Técnica: Rigorous Prompting</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 07 - DIAPO 2: EL PROMPT DE VETO ARQUITECTÓNICO -->
+        <div class="slide-element" id="slide-28">
+            <div>
+                <span class="text-xs font-mono text-accentCap3 uppercase tracking-widest">Sección 07 • Diapositiva 2</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap3 mt-2">El Prompt de Veto Arquitectónico</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-5">
+                    <div class="bg-slate-950 border border-slate-900 p-6 rounded-xl font-mono text-xs text-slate-400 space-y-3">
+                        <span class="text-accentCap3 font-bold">@prompt</span>
+                        <p class="leading-relaxed">
+                            "Analiza los requisitos de la Spec adjunta. Escribe un análisis técnico proponiendo cómo estructurar este servicio siguiendo Hexagonal. <span class="text-slate-100 font-bold">No generes código aún</span>. Espera mi aprobación."
+                        </p>
+                    </div>
+                </div>
+                <div class="col-span-7 space-y-6">
+                    <h4 class="text-2xl font-bold text-slate-200">Exigir Planificación Escrita</h4>
+                    <p class="text-lg text-slate-300 font-light leading-relaxed">
+                        En lugar de ordenarle de plano "escribe el código del módulo", se restringe su salida forzándole a debatir de forma reflexiva qué componentes formarán el dominio y cuáles la infraestructura.
+                    </p>
+                    <p class="text-slate-400 text-sm leading-relaxed border-l-4 border-accentCap3 pl-4 italic">
+                        "Se le despoja de su capacidad de improvisar obligándole a someter su plan estructural a tu veto conceptual."
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Técnica: Rigorous Prompting</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 07 - DIAPO 3: AUTOLIMITACIÓN DEL MODELO -->
+        <div class="slide-element" id="slide-29">
+            <div>
+                <span class="text-xs font-mono text-accentCap3 uppercase tracking-widest">Sección 07 • Diapositiva 3</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap3 mt-2">Autolimitación Lógica</h3>
+            </div>
+            <div class="grid grid-cols-2 gap-8 my-auto z-10">
+                <div class="bg-slate-950/60 border border-slate-900 p-8 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-lg font-bold text-slate-200 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-anchor text-accentCap3"></i> Anclar Razonamiento en Contexto
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Al obligar al modelo a redactar un texto debatiendo sobre cohesión y patrones de diseño, este análisis queda firmemente alojado en su memoria activa de conversación.
+                        </p>
+                    </div>
+                    <span class="text-xs text-slate-600 font-mono mt-4">Reducción del rango probabilístico</span>
+                </div>
+                <div class="bg-slate-950/60 border border-slate-900 p-8 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-lg font-bold text-slate-200 mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-clipboard-check text-accentCap3"></i> Ejecución de su Propio Plan
+                        </h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Al requerirle finalmente el código, la IA se autolimita de forma estricta y se autocorrige basándose en las conclusiones técnicas que ella misma acaba de plasmar en la ventana de chat.
+                        </p>
+                    </div>
+                    <span class="text-xs text-accentCap3 font-mono mt-4">La IA sigue un plan real</span>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Técnica: Rigorous Prompting</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 08: PORTADA SECCIÓN 08 -->
+        <div class="slide-element justify-center items-center text-center relative" id="slide-30">
+            <div class="absolute top-0 left-0 w-full h-1 bg-accentCap3"></div>
+            <div class="z-10">
+                <span class="text-accentCap3 tracking-widest text-xs font-bold uppercase mb-2 block font-mono">Capítulo 03 • Sección 08</span>
+                <h2 class="text-5xl font-extrabold text-slate-100 font-sans mb-6">Iteración por capas: El fin del "Hazme toda la app"</h2>
+                <div class="w-16 h-1 bg-accentCap3 mx-auto rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 08 - DIAPO 1: LA FALACIA DEL ARCHIVO ÚNICO -->
+        <div class="slide-element" id="slide-31">
+            <div>
+                <span class="text-xs font-mono text-accentCap3 uppercase tracking-widest">Sección 08 • Diapositiva 1</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap3 mt-2">La Falacia de la Petición Única</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-7 space-y-6">
+                    <p class="text-2xl text-slate-300 font-light leading-relaxed">
+                        El enfoque entusiasta consiste en pedir un boilerplate completo de una sola vez: base de datos, API, validaciones y estructura de proyecto.
+                    </p>
+                    <div class="bg-red-950/20 border border-red-500/20 p-6 rounded-2xl">
+                        <h4 class="text-sm font-bold text-accentCap3 mb-2 uppercase tracking-wide font-mono">El Caos de la Mezcla de Conceptos:</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Por pura probabilidad matemática, el modelo confundirá las fronteras. Acabará insertando lógica de negocio compleja dentro del controlador HTTP o consultas SQL directas en la capa de transporte.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-span-5">
+                    <div class="border border-slate-800 bg-slate-950/80 p-6 rounded-2xl flex flex-col justify-center items-center h-64 text-center">
+                        <i class="fa-solid fa-cubes-stacked text-5xl text-accentCap3 mb-4"></i>
+                        <p class="text-slate-200 font-bold">Dosificar la Construcción</p>
+                        <p class="text-xs text-slate-500 mt-2">Exactamente igual que estructurarías las fases de entrega en un equipo técnico de alto rendimiento.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Técnica: Rigorous Prompting</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 08 - DIAPO 2: EL FLUJO SECUENCIAL ESTRICTO -->
+        <div class="slide-element" id="slide-32">
+            <div>
+                <span class="text-xs font-mono text-accentCap3 uppercase tracking-widest">Sección 08 • Diapositiva 2</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap3 mt-2">Flujo Secuencial Estricto</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-4">
+                    <div class="bg-slate-950 border border-slate-900 p-6 rounded-2xl space-y-4">
+                        <span class="text-xs font-mono text-slate-500 uppercase block tracking-wider">Aislamiento de Responsabilidades</span>
+                        <!-- Diagrama vertical de 3 cajas -->
+                        <div class="flex flex-col gap-3">
+                            <div class="bg-accentCap3/10 border border-accentCap3 text-accentCap3 p-3 rounded-lg text-center font-bold text-xs uppercase">
+                                1. Capa de Dominio
+                            </div>
+                            <div class="bg-slate-900 border border-slate-800 text-slate-400 p-3 rounded-lg text-center font-bold text-xs uppercase">
+                                2. Capa de Aplicación
+                            </div>
+                            <div class="bg-slate-900 border border-slate-800 text-slate-400 p-3 rounded-lg text-center font-bold text-xs uppercase">
+                                3. Infraestructura
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-8 space-y-6">
+                    <h4 class="text-xl font-bold text-slate-200">Construir con Núcleo Blindado</h4>
+                    <div class="space-y-4 text-sm text-slate-400">
+                        <p>
+                            <span class="text-slate-200 font-bold block">1. Capa de Dominio Primero:</span>
+                            Entidades puras y value objects libres de dependencias de ORMs o drivers. Validamos de forma aislada las reglas puras del negocio.
+                        </p>
+                        <p>
+                            <span class="text-slate-200 font-bold block">2. Capa de Aplicación:</span>
+                            Orquestadores, casos de uso prácticos e interfaces (puertos) lógicas de salida.
+                        </p>
+                        <p>
+                            <span class="text-slate-200 font-bold block">3. Infraestructura al Final:</span>
+                            Adaptadores lógicos, controladores e integraciones directas con frameworks o bases de datos físicas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Técnica: Rigorous Prompting</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 08 - DIAPO 3: BENEFICIO DEL AISLAMIENTO -->
+        <div class="slide-element" id="slide-33">
+            <div>
+                <span class="text-xs font-mono text-accentCap3 uppercase tracking-widest">Sección 08 • Diapositiva 3</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap3 mt-2">El Beneficio del Aislamiento</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-7 space-y-6">
+                    <p class="text-2xl text-slate-300 font-light leading-relaxed">
+                        Blindar las capas nucleares elimina de plano el acoplamiento cruzado de variables en el sistema.
+                    </p>
+                    <div class="bg-slate-950 border border-slate-900 p-6 rounded-2xl">
+                        <h4 class="text-sm font-bold text-slate-200 mb-2 uppercase tracking-wide font-mono">Migraciones y Cambios Instantáneos:</h4>
+                        <p class="text-slate-400 text-sm leading-relaxed">
+                            Si mañana requieres migrar tu framework HTTP de Express a Fastify, o tu ORM de Prisma a consultas nativas SQL, la IA podrá acometer la migración estructural completa en segundos dado que el contexto general se mantiene limpio, desacoplado y perfectamente delimitado.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-span-5 flex justify-center">
+                    <div class="w-full bg-slate-950 border border-slate-800 p-8 rounded-3xl text-center shadow-2xl relative overflow-hidden">
+                        <i class="fa-solid fa-arrows-spin text-6xl text-accentCap3 mb-4"></i>
+                        <h4 class="text-lg font-bold text-slate-200 mb-2">Migración Segura</h4>
+                        <p class="text-xs text-slate-500 font-mono">El desacoplamiento habilita la agilidad real en la era de los modelos generativos.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Técnica: Rigorous Prompting</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 09: PORTADA SECCIÓN 09 -->
+        <div class="slide-element justify-center items-center text-center relative" id="slide-34">
+            <div class="absolute top-0 left-0 w-full h-1 bg-accentCap3"></div>
+            <div class="z-10">
+                <span class="text-accentCap3 tracking-widest text-xs font-bold uppercase mb-2 block font-mono">Capítulo 03 • Sección 09</span>
+                <h2 class="text-5xl font-extrabold text-slate-100 font-sans mb-6">Test-Driven Development (TDD) + IA: Los raíles de acero</h2>
+                <div class="w-16 h-1 bg-accentCap3 mx-auto rounded-full"></div>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 09 - DIAPO 1: LOS TESTS NO SE NEGOCIAN -->
+        <div class="slide-element" id="slide-35">
+            <div>
+                <span class="text-xs font-mono text-accentCap3 uppercase tracking-widest">Sección 09 • Diapositiva 1</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap3 mt-2">Los Tests no se Negocian</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-5">
+                    <div class="bg-red-950/20 border border-red-500/20 p-8 rounded-3xl text-center shadow-2xl relative overflow-hidden">
+                        <i class="fa-solid fa-heart-crack text-6xl text-accentCap1 mb-4"></i>
+                        <h4 class="text-lg font-bold text-slate-200 mb-1">Código que nace muerto</h4>
+                        <p class="text-xs text-slate-500">Cualquier fragmento de código generado por IA que carezca de tests automáticos.</p>
+                    </div>
+                </div>
+                <div class="col-span-7 space-y-6">
+                    <h4 class="text-2xl font-bold text-slate-200">Blindar Criterios de Aceptación</h4>
+                    <p class="text-lg text-slate-300 font-light leading-relaxed">
+                        Tener una Design Spec clara y unos contratos perfectamente tipados proporciona de manera automática los criterios de aceptación ideales para orquestar tests de integración robustos antes de programar una sola función lógica.
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Técnica: Rigorous Prompting</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 09 - DIAPO 2: TESTS EN ROJO PRIMERO -->
+        <div class="slide-element" id="slide-36">
+            <div>
+                <span class="text-xs font-mono text-accentCap3 uppercase tracking-widest">Sección 09 • Diapositiva 2</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap3 mt-2">Suite de Tests Primero (Rojo)</h3>
+            </div>
+            <div class="grid grid-cols-12 gap-12 items-center my-auto z-10">
+                <div class="col-span-7 space-y-6">
+                    <p class="text-xl text-slate-300 font-light leading-relaxed">
+                        Alimentamos a la IA con la Spec de diseño y las interfaces de contratos definidas, y le ordenamos escribir de forma exclusiva la suite de tests en base a ese alcance.
+                    </p>
+                    <div class="bg-slate-950 border border-slate-900 p-6 rounded-2xl">
+                        <h4 class="text-sm font-bold text-slate-200 mb-1 uppercase tracking-wide font-mono flex items-center gap-2">
+                            <span class="w-3.5 h-3.5 rounded-full bg-red-500 block"></span> El Estado Rojo Inicial
+                        </h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            La suite generada de Jest, Vitest o Rust nativo se ejecuta y falla inmediatamente debido a que no existe aún implementación de código funcional para resolver los criterios de validación.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-span-5 flex flex-col justify-center gap-3">
+                    <!-- Flujo circular de TDD -->
+                    <div class="bg-slate-950 border border-slate-900 p-5 rounded-2xl space-y-3">
+                        <span class="text-xs font-mono text-slate-500 uppercase block tracking-wider">Flujo TDD + IA</span>
+                        <div class="flex flex-col gap-2 text-xs font-mono">
+                            <div class="bg-slate-900 p-2.5 rounded border border-slate-800 text-slate-400">1. Spec Conceptual</div>
+                            <div class="bg-red-950/30 p-2.5 rounded border border-red-500 text-red-500 font-bold">2. Test en Rojo</div>
+                            <div class="bg-slate-900 p-2.5 rounded border border-slate-800 text-slate-400">3. IA Genera Código</div>
+                            <div class="bg-slate-900 p-2.5 rounded border border-slate-800 text-slate-400">4. Test en Verde</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Técnica: Rigorous Prompting</span>
+            </div>
+        </div>
+
+        <!-- SECCIÓN 09 - DIAPO 3: BUCLE DETERMINISTA Y FRASE FINAL -->
+        <div class="slide-element justify-between" id="slide-37">
+            <div>
+                <span class="text-xs font-mono text-accentCap3 uppercase tracking-widest">Sección 09 • Diapositiva 3</span>
+                <h3 class="slide-header text-slate-100 accent-border-cap3 mt-2">Bucle Determinista de Calidad</h3>
+            </div>
+            <div class="my-auto z-10 max-w-4xl mx-auto text-center space-y-8">
+                <p class="text-2xl text-slate-300 font-light leading-relaxed">
+                    Entrega la suite de tests en rojo y ordena a la IA: "Escribe la lógica necesaria para poner en verde todos estos tests. Prohibido tocar la suite de validación."
+                </p>
+                <div class="bg-emerald-950/20 border border-emerald-500/30 p-8 rounded-3xl relative">
+                    <i class="fa-solid fa-quote-left text-4xl text-emerald-500/30 absolute top-4 left-6"></i>
+                    <p class="text-xl italic text-slate-200 font-semibold px-8 leading-relaxed">
+                        "No evalúes el código de una IA leyendo sus líneas de texto; evalúalo haciendo que se estrelle contra tus tests. Si sobrevive a los tests y cumple la Spec, entonces y solo entonces, tienes software de verdad."
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-between items-center text-xs text-slate-500 border-t border-slate-900 pt-4 font-mono">
+                <span>PIVO&amp;CODE 41 • 22/may/26</span>
+                <span>La Técnica: Rigorous Prompting</span>
+            </div>
+        </div>
+
+
+        <!-- ==========================================
+             CAPÍTULO 4: DEMO PRÁCTICA (NUEVO CAPÍTULO)
+             ========================================== -->
+
+        <!-- SECCIÓN 10: PORTADA SECCIÓN 10 -->
+        <div class="slide-element justify-center items-center text-center relative" id="slide-38">
+            <div class="absolute top-0 left-0 w-full h-1 bg-accentCap4"></div>
+            <div class="z-10">
+                <span class="text-accentCap4 tracking-widest text-xs font-bold uppercase mb-2 block font-mono">Capítulo 04</span>
+                <h2 class="text-5xl font-extrabold text-slate-100 font-sans mb-6">Demo Práctica</h2>
+                <div class="w-16 h-1 bg-accentCap4 mx-auto rounded-full"></div>
+            </div>
+        </div>
+
+
+
+        <!-- ==========================================
+             DIAPOSITIVA 42: FINAL DE LA PRESENTACIÓN / Q&A
+             ========================================== -->
+        <div class="slide-element justify-center items-center text-center relative" id="slide-42">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-accentCap1 via-accentCap2 via-accentCap3 to-accentCap4"></div>
+            <div class="z-10 max-w-4xl px-8 space-y-6">
+                <h2 class="text-6xl font-extrabold tracking-tight font-sans">
+                    ¡Gracias!
+                </h2>
+                <p class="text-2xl text-slate-300 font-light">
+                    Hacia un desarrollo determinista con Inteligencia Artificial.
+                </p>
+                <div class="w-24 h-1 bg-gradient-to-r from-accentCap1 via-accentCap2 via-accentCap3 to-accentCap4 mx-auto rounded-full"></div>
+                <p class="text-sm text-slate-500 font-mono tracking-widest uppercase">PIVO&amp;CODE 41 • 22/may/26</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Controles Inferiores de la Presentación -->
+    <div class="mt-6 flex items-center justify-between w-[1280px] max-w-full px-4">
+        <!-- Izquierda: Botones de navegación simples -->
+        <div class="flex items-center gap-3">
+            <button onclick="prevSlide()" class="w-10 h-10 rounded-full bg-slate-950 hover:bg-slate-900 text-white flex items-center justify-center border border-slate-800 transition active:scale-95 shadow" title="Anterior (Flecha Izquierda)">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <span class="text-xs font-mono font-bold text-slate-400 min-w-[70px] text-center" id="slide-index-label">1 / 43</span>
+            <button onclick="nextSlide()" class="w-10 h-10 rounded-full bg-slate-950 hover:bg-slate-900 text-white flex items-center justify-center border border-slate-800 transition active:scale-95 shadow" title="Siguiente (Flecha Derecha o Espacio)">
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- Derecha: Fullscreen e indicador de sección actual -->
+        <div class="flex items-center gap-4">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-500 hidden sm:inline" id="section-indicator">Portada</span>
+            <button onclick="enterFullscreen()" class="px-4 py-2 rounded-lg border border-slate-800 bg-slate-950 hover:bg-slate-900 text-xs text-slate-300 flex items-center gap-2 transition active:scale-95" title="Pantalla Completa">
+                <i class="fa-solid fa-expand"></i> Fullscreen
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide-element');
+        const validSlides = Array.from(slides);
+        const totalSlides = validSlides.length;
+
+        const indexLabel = document.getElementById('slide-index-label');
+        const sectionIndicator = document.getElementById('section-indicator');
+
+        // Mapeo amigable de indicadores de sección según ID de diapo
+        function getSectionFriendlyName(index) {
+            if (index === 0) return "Portada Principal";
+            if (index === 1) return "Paralelo37 septiembre";
+            if (index === 2) return "Quién soy (WhoAmI)";
+            if (index >= 3 && index <= 6) return "C1 > S1: ¿Qué es el VibeCoding?";
+            if (index >= 7 && index <= 10) return "C1 > S2: Coste de las Sensaciones";
+            if (index >= 11 && index <= 14) return "C1 > S3: El Rol del Arquitecto";
+            if (index >= 15 && index <= 18) return "C2 > S4: Documentación Viva";
+            if (index >= 19 && index <= 22) return "C2 > S5: Contratos como Verdad";
+            if (index >= 23 && index <= 26) return "C2 > S6: Context Window";
+            if (index >= 27 && index <= 30) return "C3 > S7: Chain-of-Thought (CoT)";
+            if (index >= 31 && index <= 34) return "C3 > S8: Iteración por Capas";
+            if (index >= 35 && index <= 38) return "C3 > S9: TDD + IA";
+            if (index === 39) return "C4: Demo Práctica";
+            if (index === 40) return "Preguntas y Cierre";
+            return "PIVO&amp;CODE 41";
+        }
+
+        // Sistema dinámico de autoescalado para garantizar 16:9 estricto sin desbordes
+        function applyResponsiveScale() {
+            const scaleBox = document.getElementById('slide-viewport');
+            const availableWidth = window.innerWidth - 48;
+            const availableHeight = window.innerHeight - 120; // Espacio libre dejando margen para botones
+
+            const targetWidth = 1280;
+            const targetHeight = 720;
+
+            const scaleX = availableWidth / targetWidth;
+            const scaleY = availableHeight / targetHeight;
+
+            // Conservar relación de aspecto limitando el tamaño máximo a 1.2
+            let finalScale = Math.min(scaleX, scaleY);
+            if (finalScale > 1.2) finalScale = 1.2;
+
+            scaleBox.style.transform = `scale(${finalScale})`;
+        }
+
+        window.addEventListener('resize', applyResponsiveScale);
+        window.addEventListener('load', () => {
+            applyResponsiveScale();
+            syncSlideState();
+        });
+
+        // Controladores de navegación precisos
+        function goToSlide(index) {
+            if (index < 0 || index >= totalSlides) return;
+
+            validSlides[currentSlide].classList.remove('active');
+            currentSlide = index;
+            validSlides[currentSlide].classList.add('active');
+
+            syncSlideState();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                goToSlide(currentSlide + 1);
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                goToSlide(currentSlide - 1);
+            }
+        }
+
+        // Sincronizar UI de estado
+        function syncSlideState() {
+            indexLabel.innerHTML = `${currentSlide + 1} / ${totalSlides}`;
+            sectionIndicator.innerHTML = getSectionFriendlyName(currentSlide);
+        }
+
+        // Pantalla completa nativa
+        function enterFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.error("Error al intentar activar pantalla completa:", err);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Atajos de teclado nativos para agilidad del ponente
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                prevSlide();
+            }
+        });
+
+        // Soporte de gestos táctiles deslizar (swipe) para tablets/móviles
+        let touchstartX = 0;
+        let touchendX = 0;
+
+        document.addEventListener('touchstart', e => {
+            touchstartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', e => {
+            touchendX = e.changedTouches[0].screenX;
+            handleGesture();
+        });
+
+        function handleGesture() {
+            const threshold = 50;
+            if (touchendX < touchstartX - threshold) {
+                nextSlide(); // Deslizar izquierda -> Siguiente
+            }
+            if (touchendX > touchstartX + threshold) {
+                prevSlide(); // Deslizar derecha -> Anterior
+            }
+        }
+    </script>
+</body>
+</html>
